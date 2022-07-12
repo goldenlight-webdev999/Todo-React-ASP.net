@@ -4,7 +4,6 @@ export type Todo = {
   isComplete: boolean;
 };
 
-
 export type ToggleComplete = (selectedTodo: Todo) => void;
 
 export type DeleteComplete = (selectedTodo: Todo) => void;

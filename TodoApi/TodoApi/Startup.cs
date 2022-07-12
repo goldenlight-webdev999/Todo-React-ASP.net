@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TodoApi.Models;
+using Microsoft.EntityFrameworkCore;
+using TodoApi.Data;
 
 namespace TodoApi
 {
@@ -50,6 +52,9 @@ namespace TodoApi
             services.AddMvc();
 
             services.AddSingleton<ITodoRepository, TodoRepository>();
+
+            services.AddDbContext<TodoApiContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("TodoApiContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

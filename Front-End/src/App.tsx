@@ -4,7 +4,7 @@ import { TodoList } from "./TodoList";
 import { AddTodoForm } from "./AddTodoForm";
 import { AddTodo, DeleteComplete, Todo, ToggleComplete } from "./types";
 import { API_URL } from "./services/constants";
-import { del, get, patch, post } from "./services/axios";
+import { get, post, put, del } from "./services/axios";
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Array<Todo>>(initialTodos);
@@ -19,18 +19,18 @@ const App: React.FC = () => {
     updateTodo(selectedTodo, updatedTodos);
   };
 
-  const updateTodo = async (data: Todo, updatedTodos: any) => {
+  const updateTodo = async (data: Todo, updatedTodos: Todo[]) => {
     const param = data.key;
     const url = API_URL + param;    
 
     const formData = {
       "key": data.key,
       "name": data.name,
-      "isComplete": !data.isComplete
+      "isComplete": data.isComplete ? 0 : 1
     }
   
     try {
-      await patch(url, formData);
+      await put(url, formData);
       setTodos(updatedTodos);
     } catch (err) {
       console.log(err)
@@ -61,7 +61,7 @@ const App: React.FC = () => {
 
     const data = {
       "name": todo,
-      "isComplete": false
+      "isComplete": 0
     }
   
     try {
@@ -80,14 +80,14 @@ const App: React.FC = () => {
     deleteTodo(selectedTodo, updatedTodos);
   };
 
-  const deleteTodo = async (data: Todo, updatedData: any) => {
+  const deleteTodo = async (data: Todo, updatedData: Todo[]) => {
     const param = data.key;
     const url = API_URL + param;    
 
     const formData = {
       "key": data.key,
       "name": data.name,
-      "isComplete": !data.isComplete
+      "isComplete": data.isComplete ? 0 : 1
     }
   
     try {
