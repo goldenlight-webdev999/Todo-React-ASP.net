@@ -109,10 +109,6 @@ const App: React.FC = () => {
     
   };
 
-  const onList = () => {    
-    setShowDetail(false);
-  };
-
   useEffect(() => {
     getAllTodos();
   }, []);
