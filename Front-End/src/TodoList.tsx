@@ -1,18 +1,20 @@
 import React from "react";
-import { DeleteComplete, Todo, ToggleComplete } from "./types";
+import { DeleteComplete, GoDetail, Todo, ToggleComplete } from "./types";
 import { TodoListItem } from "./TodoListItem";
 
 interface TodoListProps {
   todos: Array<Todo>;
   toggleComplete: ToggleComplete;
   deleteComplete: DeleteComplete;
+  goDetail: GoDetail;
 }
-
 
 export const TodoList: React.FC<TodoListProps> = ({
   todos,
   toggleComplete,
-  deleteComplete
+  deleteComplete,
+  goDetail
+  
 }) => {
   return (
     <ul>
@@ -22,6 +24,7 @@ export const TodoList: React.FC<TodoListProps> = ({
           todo={todo}
           toggleComplete={toggleComplete}
           deleteComplete={deleteComplete}
+          goDetail={goDetail}
         />
       ))}
     </ul>

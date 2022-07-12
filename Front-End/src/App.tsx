@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { initialTodos } from "./initialTodos";
+import { initialSelectedTodo, initialTodos } from "./initialTodos";
 import { TodoList } from "./TodoList";
 import { AddTodoForm } from "./AddTodoForm";
-import { AddTodo, DeleteComplete, Todo, ToggleComplete } from "./types";
+import { AddTodo, DeleteComplete, GoDetail, Todo, ToggleComplete } from "./types";
 import { API_URL } from "./services/constants";
 import { get, post, put, del } from "./services/axios";
+import "./App.css"
+import { TodoDetail } from "./TodoDetail";
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Array<Todo>>(initialTodos);
+  const [selectTodo, setSelectTodo] = useState<Todo>(initialSelectedTodo);
+  const [showDetail, setShowDetail] = useState(false);
 
   const toggleComplete: ToggleComplete = selectedTodo => {    
     const updatedTodos = todos.map(todo => {
@@ -99,16 +103,51 @@ const App: React.FC = () => {
     }
   };
 
+  const goDetail: GoDetail = (selectedTodo: Todo) => {
+    setSelectTodo(selectedTodo)
+    setShowDetail(true);
+    
+  };
+
+  const onList = () => {    
+    setShowDetail(false);
+  };
+
   useEffect(() => {
     getAllTodos();
   }, []);
 
   return (
-    <React.Fragment>
-      <TodoList todos={todos} toggleComplete={toggleComplete} deleteComplete={deleteComplete} />
-      <AddTodoForm addTodo={addTodo} />
-    </React.Fragment>
-  );
+    <div className="container">
+      {showDetail && (
+        <div>
+          <h1 className="title text-center">Todo Detail</h1>
+          <TodoDetail todo={selectTodo}/>
+          <div 
+            className="btn text-center"
+            onClick={() => {setShowDetail(false)}}
+          >
+            Return to List
+          </div>
+        </div>
+      )}
+      {!showDetail && (
+        <>
+          <h1 className="title text-center">Todo List</h1>
+          <React.Fragment>
+            <TodoList 
+              todos={todos}
+              toggleComplete={toggleComplete}
+              deleteComplete={deleteComplete}
+              goDetail={goDetail}
+            />
+            <AddTodoForm addTodo={addTodo} />
+          </React.Fragment>
+        </>
+      )}
+    </div>
+    
+  );  
 };
 
 export default App;
